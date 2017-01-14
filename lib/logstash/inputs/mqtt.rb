@@ -60,8 +60,8 @@ class LogStash::Inputs::Mqtt < LogStash::Inputs::Base
     @client.subscribe(@topic => @qos)
     @client.get do |topic,message|
         @codec.decode(message) do |event|
-            event["host"] ||= @host
-            event["topic"] = topic
+            event.set("host", @mqttHost)
+            event.set("topic", topic)
             
             decorate(event)
             queue << event
